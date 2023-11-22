@@ -10,13 +10,18 @@
 <li>bio: text</li>
 <li>password: string 225 char max (Not null)</li>
 <li>profile_picture_url: string nullable</li>
+<li>header_picture_url: string nullable</li>
 <li>registration_date: timestamp nullable</li>
+<li>date_of_birth: timestamp nullable --above 13 year</li>
+<li>website: string 100char max(nullable)</li>
+
 
 <b>Tweet/Post - </b>(Table name: Posts)
 
 <li>post_id: bigint serial (Primary Key)</li>
 <li>content: text (280 characters)</li>
 <li>posted_at: timestamp</li>
+<li>deleted_at: timestamp</li>
 <li>user_id: bigint (Foreign Key)</li>
 <li>repost_id: bigint nullable (Foreign Key)</li>
 <li>post_type: enum ['post', 'repost' , 'reply'] (Not null) defaultValue-"Post"</li>
