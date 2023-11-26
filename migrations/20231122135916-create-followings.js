@@ -1,37 +1,35 @@
-'use strict';
+"use strict";
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Followings', {
-      id: {
+    await queryInterface.createTable("Followings", {
+      followedId: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
-      followedId: {
-        type: Sequelize.BIGINT
-      },
+
       followerId: {
-        type: Sequelize.BIGINT
+        type: Sequelize.BIGINT,
       },
       followingId: {
-        type: Sequelize.BIGINT
+        type: Sequelize.BIGINT,
       },
       followedAt: {
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE
-      }
+        type: Sequelize.DATE,
+      },
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Followings');
-  }
+    await queryInterface.dropTable("Followings");
+  },
 };

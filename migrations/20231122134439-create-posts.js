@@ -1,46 +1,60 @@
-'use strict';
+"use strict";
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Posts', {
+    await queryInterface.createTable("Posts", {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.BIGINT,
       },
       type: {
-        type: Sequelize.ENUM('repost', 'post', 'reply')
+        allowNull: false,
+        type: Sequelize.ENUM("repost", "post", "reply"),
+        defaultValue: "post",
       },
-      repostId: {
-        type: Sequelize.BIGINT
+      referenceId: {
+        allowNull: true,
+        type: Sequelize.BIGINT,
+        References: {
+          model: "Posts",
+          key: "id",
+        },
       },
       userId: {
-        type: Sequelize.BIGINT
+        type: Sequelize.BIGINT,
+        allowNull: false,
+        references: {
+          model: "Users",
+          key: "id",
+        },
       },
       content: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING(280),
+        allowNull: false,
       },
       postedAt: {
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
+        allowNull: true,
       },
       createdAt: {
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.NOW,
+        allowNull: false,
       },
       deletedAt: {
-        type: Sequelize.STRING
+        type: Sequelize.DATE,
+        allowNull: true,
       },
-      createdAt: {
-        allowNull: false,
-        type: Sequelize.DATE
-      },
+
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE
-      }
+        type: Sequelize.DATE,
+      },
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Posts');
-  }
+    await queryInterface.dropTable("Posts");
+  },
 };

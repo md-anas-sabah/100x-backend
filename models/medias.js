@@ -1,7 +1,6 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
+"use strict";
+const post = require("./posts");
+const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class Medias extends Model {
     /**
@@ -13,14 +12,34 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
     }
   }
-  Medias.init({
-    index: DataTypes.INTEGER,
-    postedId: DataTypes.BIGINT,
-    url: DataTypes.STRING,
-    type: DataTypes.ENUM('image', 'video', 'gif')
-  }, {
-    sequelize,
-    modelName: 'Medias',
-  });
+  Medias.init(
+    {
+      index: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+      },
+      postedId: {
+        type: DataTypes.BIGINT,
+        allowNull: true,
+        references: {
+          model: post,
+          key: "id",
+        },
+      },
+      url: {
+        type: DataTypes.STRING(2048),
+        allowNull: false,
+      },
+      type: {
+        type: DataTypes.ENUM,
+        values: ["image", "video", "gif"],
+        allowNull: false,
+      },
+    },
+    {
+      sequelize,
+      modelName: "Medias",
+    }
+  );
   return Medias;
 };
