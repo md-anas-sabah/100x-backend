@@ -99,12 +99,12 @@ module.exports = (sequelize, DataTypes) => {
       createdAt: {
         type: DataTypes.DATE,
         allowNull: false,
-        defaultValue: DataTypes.fn("NOW"),
+        defaultValue: DataTypes.NOW,
       },
       updatedAt: {
         allowNull: false,
         type: DataTypes.DATE,
-        defaultValue: DataTypes.fn("NOW"),
+        defaultValue: DataTypes.NOW,
       },
       password: {
         type: DataTypes.STRING(256),
