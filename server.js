@@ -1,5 +1,5 @@
 const express = require("express");
-const { Users } = require("./models");
+const { Users } = require("./models/users.js");
 const bcrypt = require("bcryptjs");
 const db = require("./models/index.js");
 
@@ -24,36 +24,21 @@ app.get("/healthcheck", async (req, res) => {
 });
 
 app.post("/signup", async (req, res) => {
-  console.log(req.body);
   try {
-    // const hashedPassword = await bcrypt.hash(req.body.password, 10);
-
+    const hashedPassword = await bcrypt.hash(req.body.password, 10);
     await Users.create({
-      // id: "454",
-      // displayName: "verfsdfonica",
-      // username: "vefdsfron",
-      // email: "verosdfndf@example.com",
-      // password: "#er34", // replace with a hashed password
-      // bio: "I am strongest.",
-      // location: "Vatican city",
-      // webiste: "https://veron.com",
-      // profilePicUrl: "https://veron.com/profile.jpg",
-      // headerPicUrl: "https://veron.com/cover.jpg",
-      // dateOfBirth: new Date("1996-08-23"),
-
       username: req.body.username,
       displayName: req.body.displayName,
       email: req.body.email,
-      // password: hashedPassword,
-      password: req.body.password,
-      bio: req.body.bio,
       location: req.body.location,
+      bio: req.body.bio,
+      password: hashedPassword,
       website: req.body.website,
+      dateOfBirth: new Date(req.body.dateOfBirth),
       profilePicUrl: req.body.profilePicUrl,
       headerPicUrl: req.body.headerPicUrl,
-      dateOfBirth: new Date(req.body.dateOfBirth),
     });
-    console.log(res.body);
+    console.log(req.body.username);
     res.status(201).send({ message: "User created!" });
   } catch (error) {
     res.status(500).send({ error: "Failed to Create  user" });

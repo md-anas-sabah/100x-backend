@@ -1,0 +1,15 @@
+   {
+          "username": "Md Anas Sabah",
+           "displayName": "MdAnasSabah",
+           "email": "mdanassabah@gmail.com",
+           "password": "Anas@123",
+           "bio": "Indian",
+           "location": "Patna,India",
+           "website": "www.anassabahblog.vercel.app",
+           "profilePicUrl":"https://veron.com/profile.jpg",
+           "headerPicUrl": "https://veron.com/cover.jpg",
+           "dateOfBirth": "10-12-2001",
+           "createdAt": "02-12-2001",
+           "updatedAt"" "03-12-2001"
+
+}
