@@ -1,16 +1,12 @@
 const express = require("express");
-const { Users } = require("./models/users.js");
+const { Users } = require("./models");
 const bcrypt = require("bcryptjs");
 const db = require("./models/index.js");
 
 const app = express();
-const port = 4000;
-
 app.use(express.json());
 
-app.listen(port, () => {
-  console.log("app running on port 4000");
-});
+const port = 4000;
 
 app.get("/healthcheck", async (req, res) => {
   try {
@@ -25,10 +21,11 @@ app.get("/healthcheck", async (req, res) => {
 
 app.post("/signup", async (req, res) => {
   try {
-    const hashedPassword = await bcrypt.hash(req.body.password, 10);
+    const saltCount = 10;
+    const hashedPassword = await bcrypt.hash(req.body.password, saltCount);
     await Users.create({
-      username: req.body.username,
       displayName: req.body.displayName,
+      username: req.body.username,
       email: req.body.email,
       location: req.body.location,
       bio: req.body.bio,
@@ -38,17 +35,15 @@ app.post("/signup", async (req, res) => {
       profilePicUrl: req.body.profilePicUrl,
       headerPicUrl: req.body.headerPicUrl,
     });
-    console.log(req.body.username);
+
     res.status(201).send({ message: "User created!" });
   } catch (error) {
     res.status(500).send({ error: "Failed to Create  user" });
     console.log(error);
+    console.log(req.body);
   }
 });
 
-// app.post('/login',async (req,res)=>{
-//     const {email,password} = req.body;
-//     try{
-//         const user = await User.findOne({where:{email}})
-//     }
-// })
+app.listen(port, () => {
+  console.log("app running on port 4000");
+});
