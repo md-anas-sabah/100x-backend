@@ -17,7 +17,7 @@ const port = 4000;
 app.get("/healthcheck", async (req, res) => {
   try {
     await db.sequelize.authenticate();
-    await db.sequelize.close();
+    // await db.sequelize.close();
     res.status(200).send("I'm healthy!");
   } catch (error) {
     await db.sequelize.close();
