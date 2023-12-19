@@ -1,10 +1,16 @@
 const express = require("express");
-const { Users } = require("./models");
 const bcrypt = require("bcryptjs");
+const cors = require("cors");
+const cookieParser = require("cookie-parser");
+
+const { Users, Posts } = require("./models");
 const db = require("./models/index.js");
 
 const app = express();
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(cookieParser())
+app.use(cors());
 
 const port = 4000;
 
@@ -18,6 +24,19 @@ app.get("/healthcheck", async (req, res) => {
     res.status(500).send("Unable to connect to the sever");
   }
 });
+
+const authenticateUser = async (req, res, next) => {
+  const user_id = req.cookies.user_id;
+  if (!user_id) {
+    return res.status(401).send("Unauthorized User.");
+  }
+  try {
+    req.current_user = await Users.findOne({ where: { id: user_id } });
+    next();
+  } catch (err) {
+    res.status(401).send("Invalid Token");
+  }
+};
 
 app.post("/signup", async (req, res) => {
   try {
@@ -44,6 +63,49 @@ app.post("/signup", async (req, res) => {
   }
 });
 
+app.post("/login", async (req, res) => {
+  const { email, password } = req.body;
+
+  try {
+    const user = await Users.findOne({ where: { email } });
+    if (!user) {
+      return res.status(400).send("User not found");
+    }
+
+    const isValidPassword = bcrypt.compare(password, user.password);
+    if (!isValidPassword) {
+      return res.status(401).send("Invalid credentials");
+    }
+
+    res.cookie("user_id", user.id, {
+      httpOnly: true,
+      // secure:true,
+      maxAge: 3600000,
+    });
+
+    res.status(200).send("LoggedIn");
+  } catch (err) {
+    console.error("Error during login", err);
+    console.log(email, password);
+    res.status(500).send("Internal server error");
+  }
+});
+
+app.get("/feed", authenticateUser, async (req, res) => {
+  try {
+    const posts = await Posts.findAll();
+    res.status(200).json({ posts: posts, email: req.current_user.email });
+  } catch (error) {
+    res.status(500).json({ error: "failed to fetch posts" });
+  }
+});
+
 app.listen(port, () => {
   console.log("app running on port 4000");
 });
+
+// http://localhost:4000/login?email=elon3@gmail.com&password=elon4
+
+// if (!email || !password) {
+//   return res.status(400).send("Email and password are required");
+// }
