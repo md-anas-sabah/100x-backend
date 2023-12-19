@@ -25,6 +25,14 @@ app.get("/healthcheck", async (req, res) => {
   }
 });
 
+app.get("/", async (req, res) => {
+  try {
+    res.send("conntected");
+  } catch (error) {
+    res.status(500).send("Unable to connect to the sever");
+  }
+});
+
 const authenticateUser = async (req, res, next) => {
   const user_id = req.cookies.user_id;
   if (!user_id) {
