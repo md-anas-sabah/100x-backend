@@ -12,7 +12,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(cors());
 
-const port = 4000;
+const port = 10000;
 
 app.get("/healthcheck", async (req, res) => {
   try {
@@ -109,7 +109,7 @@ app.get("/feed", authenticateUser, async (req, res) => {
 });
 
 app.listen(port, () => {
-  console.log("app running on port 4000");
+  console.log("app running on port 10000");
 });
 
 // http://localhost:4000/login?email=elon3@gmail.com&password=elon4
