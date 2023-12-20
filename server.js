@@ -3,8 +3,8 @@ const bcrypt = require("bcryptjs");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 
-const { Users, Posts } = require("./models");
 const db = require("./models/index.js");
+const { Users, Posts } = require("./models");
 
 const app = express();
 app.use(express.urlencoded({ extended: true }));
@@ -17,17 +17,17 @@ const port = 4000;
 app.get("/healthcheck", async (req, res) => {
   try {
     await db.sequelize.authenticate();
-    await db.sequelize.close();
+    // await db.sequelize.close();
     res.status(200).send("I'm healthy!");
   } catch (error) {
-    await db.sequelize.close();
+    // await db.sequelize.close();
     res.status(500).send("Unable to connect to the sever");
   }
 });
 
 app.get("/", async (req, res) => {
   try {
-    res.send("conntected");
+    res.send("wah g wah connected");
   } catch (error) {
     res.status(500).send("Unable to connect to the sever");
   }
